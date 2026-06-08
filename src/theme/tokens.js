@@ -43,3 +43,20 @@ export const baseTokens = {
     xl: "20px",
   },
 };
+
+export function tokensToCSSVars(tokens) {
+  const vars = {};
+  const walk = (obj, path = []) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      const nextPath = [...path, key];
+      if (typeof value === 'object') {
+        walk(value, nextPath);
+      } else {
+        const varName = `--sky-${nextPath.join('-')}`;
+        vars[varName] = value;
+      }
+    });
+  };
+  walk(tokens);
+  return vars;
+}

@@ -1,9 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+// main.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import { CustomProvider } from "./theme/Provider.jsx"; // add .jsx extension
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+document.body.style.backgroundColor = "#F4EFE6   ";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <CustomProvider>
+      <App />
+    </CustomProvider>
+  </React.StrictMode>,
+);

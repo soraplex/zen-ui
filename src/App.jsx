@@ -4,7 +4,7 @@ import { Button } from "./components/Button";
 
 const DemoContainer = ({ title, children }) => (
   <div style={{ marginBottom: "16px" }}>
-    <h3 style={{ marginBottom: "6px", fontFamily: "sans-serif", fontSize: "12px", color: "#333333" }}>{title}</h3>
+    <h3 style={{ marginBottom: "6px", fontFamily: "sans-serif", fontSize: "12px", color: "#9090c4" }}>{title}</h3>
     <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>{children}</div>
   </div>
 );

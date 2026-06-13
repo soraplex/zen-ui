@@ -1,37 +1,57 @@
+// src/components/Flex.jsx
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useTheme } from "@emotion/react";
 
-const getToken = (theme, token) => {
-  if (!token || !token.includes(".")) return token;
-  const [colorName, shade] = token.split(".");
-  return theme.colors[colorName]?.[shade] || token;
+const getResponsiveValue = (value) => {
+  if (!value) return "";
+  if (Array.isArray(value)) {
+    const [sm, md, lg] = value;
+    return css`
+      ${sm ? `flex-direction: ${sm};` : ""}
+      @media (min-width: 768px) {
+        ${md || sm ? `flex-direction: ${md || sm};` : ""}
+      }
+      @media (min-width: 1024px) {
+        ${lg || md || sm ? `flex-direction: ${lg || md || sm};` : ""}
+      }
+    `;
+  }
+  return css`
+    flex-direction: ${value};
+  `;
 };
 
-const StyledBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: ${(props) => props.theme.space[1]} ${(props) => props.theme.space[2]};
-  font-size: 12px;
-  font-weight: 600;
-  font-family: ${(props) => props.theme.fonts.body};
-  border-radius: ${(props) => props.theme.radii.full};
-  background-color: ${(props) => props.bgColor};
-  color: ${(props) => props.textColor};
-
-  ${(props) => props.customStyles}
+const StyledFlex = styled.div`
+  display: flex;
+  ${(props) => props.$direction && getResponsiveValue(props.$direction)}
+  ${(props) =>
+    props.$justify &&
+    css`
+      justify-content: ${props.$justify};
+    `}
+  ${(props) =>
+    props.$align &&
+    css`
+      align-items: ${props.$align};
+    `}
+  ${(props) =>
+    props.$gap &&
+    css`
+      gap: ${props.$gap};
+    `}
+  ${(props) =>
+    props.$wrap &&
+    css`
+      flex-wrap: ${props.$wrap};
+    `}
 `;
 
-export const Badge = ({ children, color = "gray.500", ...props }) => {
-  const theme = useTheme();
-
-  const bgColor = getToken(theme, color) + "20"; // Adds 20 for light background
-  const textColor = getToken(theme, color);
-
+export const Flex = ({ children, direction, justify, align, gap, wrap, ...props }) => {
   return (
-    <StyledBadge bgColor={bgColor} textColor={textColor} {...props}>
+    <StyledFlex $direction={direction} $justify={justify} $align={align} $gap={gap} $wrap={wrap} {...props}>
       {children}
-    </StyledBadge>
+    </StyledFlex>
   );
 };

@@ -1,83 +1,58 @@
+// // src/components/Alert.jsx
+// import React from 'react';
+// import styled from '@emotion/styled';
+// import { useTheme } from '@emotion/react';
+// import { Box } from './Box';
+// import { Text } from './Text';
+
+// const AlertContainer = styled.div(props => ({
+//   padding: props.theme.space[3],
+//   borderRadius: props.theme.radii.md,
+//   borderLeft: '4px solid ' + props.borderCol,
+//   backgroundColor: props.bgCol,
+// }));
+
+// export const Alert = ({ children, title, status = 'info', ...props }) => {
+//   const theme = useTheme();
+
+//   const colors = {
+//     info: { bg: '#eff6ff', border: '#3b82f6', text: '#1d4ed8' },
+//     success: { bg: '#f0fdf4', border: '#22c55e', text: '#15803d' },
+//     warning: { bg: '#fefce8', border: '#eab308', text: '#a16207' },
+//     error: { bg: '#fef2f2', border: '#ef4444', text: '#b91c1c' },
+//   };
+
+//   const c = colors[status] || colors.info;
+
+//   return (
+//     <AlertContainer bgCol={c.bg} borderCol={c.border}>
+//       {title && <Text fontWeight="600" color={c.text}>{title}</Text>}
+//       <Text color={c.text}>{children}</Text>
+//     </AlertContainer>
+//   );
+// };
+
+// src/components/Alert.jsx
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 import { useTheme } from "@emotion/react";
+import { Text } from "./Text";
 
 const getToken = (theme, token) => {
   if (!token || !token.includes(".")) return token;
   const [colorName, shade] = token.split(".");
-  return theme.colors[colorName]?.[shade] || token;
+  const colorObj = theme.colors[colorName];
+  return colorObj ? colorObj[shade] : token;
 };
 
-const getResponsivePadding = (p, theme) => {
-  if (!p) {
-    return css`
-      padding: ${theme.space[3]} ${theme.space[3]};
-    `;
-  }
+const AlertContainer = styled.div((props) => ({
+  padding: props.theme.space[3],
+  borderRadius: props.theme.radii.md,
+  borderLeft: "4px solid " + props.brdcol,
+  backgroundColor: props.bgcol,
+}));
 
-  if (!Array.isArray(p)) {
-    return css`
-      padding: ${theme.space[p] || p};
-    `;
-  }
-
-  const [sm, md, lg] = p;
-
-  return css`
-    padding: ${theme.space[sm] || sm || theme.space[3]};
-    @media (min-width: 768px) {
-      padding: ${theme.space[md || sm] || md || sm || theme.space[3]};
-    }
-    @media (min-width: 1024px) {
-      padding: ${theme.space[lg || md || sm] || lg || md || sm || theme.space[3]};
-    }
-  `;
-};
-
-const getResponsiveFont = (fontSize) => {
-  if (!fontSize) return "";
-  if (!Array.isArray(fontSize))
-    return css`
-      font-size: ${fontSize};
-    `;
-
-  const [sm, md, lg] = fontSize;
-
-  return css`
-    font-size: ${sm};
-    @media (min-width: 768px) {
-      font-size: ${md || sm};
-    }
-    @media (min-width: 1024px) {
-      font-size: ${lg || md || sm};
-    }
-  `;
-};
-
-const AlertContainer = styled.div`
-  border-left: 4px solid ${(props) => props.borderColor};
-  background-color: ${(props) => props.bgColor};
-  border-radius: ${(props) => props.theme.radii.md || "4px"};
-
-  ${(props) => getResponsivePadding(props.$p, props.theme)}
-
-  ${(props) =>
-    props.$titleFont &&
-    css`
-      font-weight: 600;
-      margin-bottom: ${props.$hasChildren ? "4px" : "0"};
-    `}
-`;
-
-const AlertText = styled.p`
-  color: ${(props) => props.color};
-  margin: 0;
-  font-family: ${(props) => props.theme.fonts.body};
-  ${(props) => getResponsiveFont(props.$fontSize)}
-`;
-
-export const Alert = ({ children, title, status = "info", p, fontSize, ...props }) => {
+export const Alert = ({ children, title, status = "info", ...props }) => {
   const theme = useTheme();
 
   const statusColors = {
@@ -90,25 +65,13 @@ export const Alert = ({ children, title, status = "info", p, fontSize, ...props 
   const colors = statusColors[status] || statusColors.info;
 
   return (
-    <AlertContainer
-      theme={theme}
-      $p={p}
-      $titleFont={title}
-      $hasChildren={children}
-      bgColor={colors.bg}
-      borderColor={colors.border}
-      {...props}
-    >
+    <AlertContainer theme={theme} bgcol={colors.bg} brdcol={colors.border}>
       {title && (
-        <AlertText theme={theme} $titleFont={true} $hasChildren={children} color={colors.text}>
+        <Text fontWeight="600" color={colors.text}>
           {title}
-        </AlertText>
+        </Text>
       )}
-      {children && (
-        <AlertText theme={theme} $fontSize={fontSize} color={colors.text}>
-          {children}
-        </AlertText>
-      )}
+      <Text color={colors.text}>{children}</Text>
     </AlertContainer>
   );
 };

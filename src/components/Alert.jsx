@@ -56,10 +56,10 @@ export const Alert = ({ children, title, status = "info", ...props }) => {
   const theme = useTheme();
 
   const statusColors = {
-    info: { bg: theme.colors.blue[50], border: theme.colors.blue[500], text: theme.colors.blue[700] },
-    success: { bg: theme.colors.green[50], border: theme.colors.green[500], text: theme.colors.green[700] },
-    warning: { bg: theme.colors.yellow[50], border: theme.colors.yellow[500], text: theme.colors.yellow[700] },
-    error: { bg: theme.colors.red[50], border: theme.colors.red[500], text: theme.colors.red[700] },
+    info: { bg: theme.colors.water[50], border: theme.colors.water[500], text: theme.colors.water[700] },
+    success: { bg: theme.colors.life[50], border: theme.colors.life[500], text: theme.colors.life[700] },
+    warning: { bg: theme.colors.thunder[50], border: theme.colors.thunder[500], text: theme.colors.thunder[700] },
+    error: { bg: theme.colors.fire[50], border: theme.colors.fire[500], text: theme.colors.fire[700] },
   };
 
   const colors = statusColors[status] || statusColors.info;
